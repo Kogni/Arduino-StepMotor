@@ -1,13 +1,16 @@
-#define IN1  8
-#define IN2  9
-#define IN3  10
-#define IN4  11
-#define Lys1  2
-#define Lys2  3
-#define Lys3  4
-#define Lys4  5
-#define Lys5  13
+const int LED1 = 13;
 
+const int servoOut1 = 12;
+const int servoOut2 = 11;
+const int servoOut3 = 10;
+const int servoOut4 = 9;
+
+int val = 0;
+
+#define IN1  9
+#define IN2  10
+#define IN3  11
+#define IN4  12
 int Steps = 0;
 boolean Direction = true;// gre
 unsigned long last_time;
@@ -15,52 +18,37 @@ unsigned long currentMillis ;
 int steps_left = 4095;
 long time;
 
-boolean light = false;
-
-void setup()
-{
+void setup() {
+  // put your setup code here, to run once:
   Serial.begin(115200);
-  Serial.println("Hello World");
-  pinMode(IN1, OUTPUT);
-  pinMode(IN2, OUTPUT);
-  pinMode(IN3, OUTPUT);
-  pinMode(IN4, OUTPUT);
-
-  pinMode(Lys1, OUTPUT);
-  pinMode(Lys2, OUTPUT);
-  pinMode(Lys3, OUTPUT);
-  pinMode(Lys4, OUTPUT);
-  pinMode(Lys5, OUTPUT);
-  // delay(1000);
-
+  pinMode(servoOut1, OUTPUT);
+  pinMode(servoOut2, OUTPUT);
+  pinMode(servoOut3, OUTPUT);
+  pinMode(servoOut4, OUTPUT);
+  pinMode(LED1, OUTPUT);
 }
-void loop()
-{
 
-  digitalWrite(Lys1, HIGH);
-  digitalWrite(Lys2, HIGH);
-  digitalWrite(Lys3, HIGH);
-  digitalWrite(Lys4, HIGH);
-  digitalWrite(Lys5, HIGH);
+void loop() {
+  // put your main code here, to run repeatedly:
 
+  digitalWrite(servoOut1, HIGH);
+  digitalWrite(servoOut2, HIGH);
+  digitalWrite(servoOut3, HIGH);
+  digitalWrite(servoOut4, HIGH);
   /*
-      if (light == true) {
-        light = false;
-        Serial.println("Turn off");
-        digitalWrite(Lys1, HIGH);
-        digitalWrite(Lys2, HIGH);
-        digitalWrite(Lys3, HIGH);
-        digitalWrite(Lys4, HIGH);
-        digitalWrite(Lys5, HIGH);
-      } else {
-        light = true;
-        Serial.println("Turn on");
-        digitalWrite(Lys1, LOW);
-        digitalWrite(Lys2, LOW);
-        digitalWrite(Lys3, LOW);
-        digitalWrite(Lys4, LOW);
-        digitalWrite(Lys5, LOW);
-      }*/
+    val = digitalRead(servoIn);
+    digitalWrite(LED1, val);
+    digitalWrite(servoOut, HIGH);
+    if ( val == LOW ) {
+      //digitalWrite(servoOut, !val);
+    } else {
+      //digitalWrite(servoOut, !val);
+    }
+  */
+  digitalWrite(LED1, HIGH);
+  //delay(100);
+  //digitalWrite(LED1, LOW);
+  //delay(100);
 
   while (steps_left > 0) {
     currentMillis = micros();
@@ -75,6 +63,8 @@ void loop()
   Serial.println("Wait...!");
   delay(100);
   Direction = !Direction;
+  //4095 steps/380 grader=11 steps/1 grad
+  //1800 grader=2047
   steps_left = 2047;
 }
 
@@ -139,6 +129,7 @@ void stepper(int xw) {
     SetDirection();
   }
 }
+
 void SetDirection() {
   if (Direction == 1) {
     Steps++;
