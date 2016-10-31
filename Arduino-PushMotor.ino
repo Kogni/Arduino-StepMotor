@@ -1,12 +1,12 @@
-//Turn the switch to turn motor on/off
+//Turn the switch to run the motor once
 const int ledUt = 13;
 
 //button stuff
 const int  buttonPin = 2;
 int buttonState = 0;
 int lastButtonState = 0;
-int tilstand = 0;
-int buttonStateForrigeForrige = 0;
+int tilstandNaa = 0;
+int tilstandForrige = 0;
 
 //servo stuff
 #define servo1  8
@@ -36,23 +36,22 @@ void loop() {
   buttonState = digitalRead(buttonPin);
   Serial.println("Sjekk_______________");
 
-  tilstand = LOW;
+  tilstandNaa = LOW;
   if ( buttonState == HIGH ) {
     Serial.println("buttonState HIGH");
     if ( lastButtonState == HIGH ) {
       Serial.println("lastButtonState HIGH");
-      tilstand = HIGH;
+      tilstandNaa = HIGH;
     } else {
       Serial.println("lastButtonState LOW");
     }
   } else {
     Serial.println("buttonState LOW");
   }
-  buttonStateForrigeForrige = lastButtonState;
   lastButtonState = buttonState;
 
-  if (tilstand == HIGH) {
-    Serial.println("lastButtonState HIGH 1");
+  if ( tilstandNaa != tilstandForrige ){
+    Serial.println("State change");
     digitalWrite(ledUt, HIGH);
     while (steps_left > 0) { 
       //samtlige kjøres i hver eneste tick
@@ -66,7 +65,6 @@ void loop() {
         steps_left--;
       }
     }
-    Serial.println("lastButtonState HIGH 2");
   } else {
     digitalWrite(ledUt, LOW);
   }
@@ -76,6 +74,7 @@ void loop() {
   //delay(10);
   Direction = !Direction;
   steps_left = 2047;
+    tilstandForrige = tilstandNaa;
 }
 
 void stepper(int xw) {

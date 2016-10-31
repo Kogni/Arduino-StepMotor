@@ -1,5 +1,6 @@
-// One Button On/Off Toggle
-const int buttonPin = 2;     // the number of the pushbutton pin
+//Turn the switch to toggle LED on/off
+const int buttonIn = 3;     // the number of the pushbutton pin
+const int buttonOut = 2;
 const int ledPin =  13;      // the number of the LED pin
 
 // Variables will change:
@@ -13,15 +14,17 @@ long debounceDelay = 50;    // the debounce time; increase if the output flicker
 
 void setup() {
   Serial.begin(115200);
-  pinMode(buttonPin, INPUT);
+  pinMode(buttonIn, INPUT);
+  pinMode(buttonOut, OUTPUT);
   pinMode(ledPin, OUTPUT);
 }
 
 
 void loop() {
   digitalWrite(ledPin, HIGH);
+  digitalWrite(buttonOut, HIGH);
   
-  reading = digitalRead(buttonPin);
+  reading = digitalRead(buttonIn);
   if (reading != lastButtonState) {
     lastDebounceTime = millis();
     lastButtonState = reading;
